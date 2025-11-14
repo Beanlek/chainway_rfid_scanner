@@ -379,7 +379,7 @@ public class ChainwayRfidScannerHelper {
 
         if(exists){
             tagMap = tagList.get(index);
-            tagMap.put(Constants.TAG_COUNT, tagMap.get(Constants.TAG_COUNT) + 1);
+            tagMap.put(Constants.TAG_COUNT, String.valueOf(Double.parseDouble(tagMap.get(Constants.TAG_COUNT)) + 1));
         } else {
 
             tagMap.put(Constants.TAG_EPC, info.getEPC());
