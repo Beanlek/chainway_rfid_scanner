@@ -432,6 +432,8 @@ public class ChainwayRfidScannerHelper {
             return;
         }
 
+        clearInventory();
+
         mReader.setInventoryCallback(mInventoryCallback);
 
         isScanning = true;

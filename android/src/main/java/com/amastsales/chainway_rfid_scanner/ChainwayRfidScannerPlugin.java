@@ -303,7 +303,14 @@ public class ChainwayRfidScannerPlugin implements FlutterPlugin, MethodCallHandl
 
               } catch (Exception e) {
                 Log.e(eChannel, "", e);
-                eSink.error(eChannel, e.getMessage(), null);
+
+                if (activity != null && eSink != null) {
+                  activity.runOnUiThread(() -> {
+                    if (eSink != null)
+                      eSink.error(eChannel, e.getMessage(), null);
+                  });
+                }
+                // eSink.error(eChannel, e.getMessage(), null);
               }
 
               break;
