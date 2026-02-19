@@ -148,18 +148,21 @@ public class ChainwayRfidScannerHelper {
     }
 
     public static ChainwayRfidScannerHelper getInstance(Context context, FlutterPlugin.FlutterPluginBinding binding) {
-        Log.d(TAG, "getInstance");
+        Log.d(TAG, "getInstance binding");
         if (instance == null) {
             instance = new ChainwayRfidScannerHelper(context, binding);
+            Log.d(TAG, "getInstance binding success");
         }
         return instance;
     }
     public static ChainwayRfidScannerHelper getInstance(Context context, Activity activity) {
-        Log.d(TAG, "getInstance");
+        Log.d(TAG, "getInstance activity");
         if (instance == null) {
             instance = new ChainwayRfidScannerHelper(context, activity);
+            Log.d(TAG, "getInstance activity success0");
         } else {
             instance.mActivity = activity;
+            Log.d(TAG, "getInstance activity success1");
         }
         return instance;
     }

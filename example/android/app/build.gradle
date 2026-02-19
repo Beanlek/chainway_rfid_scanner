@@ -42,3 +42,7 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation(files("libs/DeviceAPI_ver20231208_release.aar"))
+}
