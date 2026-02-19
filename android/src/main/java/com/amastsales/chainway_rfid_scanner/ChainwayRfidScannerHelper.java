@@ -96,24 +96,24 @@ public class ChainwayRfidScannerHelper {
                         break;
                 }
 
-                switch (mScanPower) {
-                    case Constants.POWER_LOW:
-                        mReader.setPower(Constants.POWER_LOW);
-
-                        break;
-                    case Constants.POWER_MED:
-                        mReader.setPower(Constants.POWER_MED);
-
-                        break;
-                    case Constants.POWER_HI:
-                        mReader.setPower(Constants.POWER_HI);
-
-                        break;
-                    case Constants.POWER_MAX:
-                        mReader.setPower(Constants.POWER_MAX);
-
-                        break;
-                }
+//                switch (mScanPower) {
+//                    case Constants.POWER_LOW:
+//                        mReader.setPower(Constants.POWER_LOW);
+//
+//                        break;
+//                    case Constants.POWER_MED:
+//                        mReader.setPower(Constants.POWER_MED);
+//
+//                        break;
+//                    case Constants.POWER_HI:
+//                        mReader.setPower(Constants.POWER_HI);
+//
+//                        break;
+//                    case Constants.POWER_MAX:
+//                        mReader.setPower(Constants.POWER_MAX);
+//
+//                        break;
+//                }
             }
         }
 
@@ -266,8 +266,15 @@ public class ChainwayRfidScannerHelper {
     public void setScanMode(String scanMode) {
         mScanMode = scanMode;
     }
+    public int getScanPower() {
+        fGetScanPower();
+
+        return mScanPower;
+    }
     public void setScanPower(int scanPower) {
         mScanPower = scanPower;
+
+        fSetScanPower();
     }
     public List<HashMap<String, String>> performInventory() {
         Log.d(TAG, "performInventory");
@@ -429,6 +436,26 @@ public class ChainwayRfidScannerHelper {
         }
 
         if (D) Log.d(TAG, "connect state = " + con.toString());
+    }
+    private void fGetScanPower() {
+        int power = mReader.getPower();
+        if (D) Log.d(TAG, "f power: " + power);
+
+        mScanPower = power;
+
+        if (D) Log.d(TAG, "power level = " + mScanPower);
+    }
+    private void fSetScanPower() {
+        boolean res = mReader.setPower(mScanPower);
+
+        if (res) {
+            if (D) Log.d(TAG, "power set: "+ String.valueOf(mScanPower));
+        }
+        else {
+            if (D) Log.d(TAG, "power set failed");
+        }
+
+        if (D) Log.d(TAG, "power level = " + String.valueOf(mScanPower));
     }
     private void fPerformInventory()  {
         if (isScanning) {

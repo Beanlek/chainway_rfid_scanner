@@ -87,5 +87,12 @@ class MethodChannelChainwayRfidScanner extends ChainwayRfidScannerPlatform {
     return result;
   }
 
+  // get power level
+  @override
+  Future<int?> getScanPower() async {
+    final result = await methodChannel.invokeMethod<int>('getScanPower');
+    return result;
+  }
+
   // set scanner name
 }

@@ -47,5 +47,10 @@ class ChainwayRfidScanner {
     return ChainwayRfidScannerPlatform.instance.setScanPower(scanPower);
   }
 
+  // get power level
+  Future<int?> getScanPower() {
+    return ChainwayRfidScannerPlatform.instance.getScanPower();
+  }
+
   // set scanner name
 }

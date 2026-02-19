@@ -44,6 +44,7 @@ public class Constants {
     public static final int MSG_BATT_NOTI = 3; // Always be display Battery
 
     // POWER
+    public static final int POWER_ZERO = 0;
     public static final int POWER_LOW = 5;
     public static final int POWER_MED = 10;
     public static final int POWER_HI = 20;

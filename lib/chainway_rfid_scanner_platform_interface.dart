@@ -68,5 +68,10 @@ abstract class ChainwayRfidScannerPlatform extends PlatformInterface {
     throw UnimplementedError('setScanPower() has not been implemented.');
   }
 
+  // get power level
+  Future<int?> getScanPower() {
+    throw UnimplementedError('getScanPower() has not been implemented.');
+  }
+
   // set scanner name
 }

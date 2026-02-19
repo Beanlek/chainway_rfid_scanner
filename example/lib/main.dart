@@ -21,6 +21,8 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _chainwayRfidScannerPlugin = ChainwayRfidScanner();
   bool _loading = false;
+  int _sliderValue = 1;
+  int _currentPower = 1;
 
   String _connectStatus = 'Unknown';
   bool _connected = false;
@@ -51,6 +53,10 @@ class _MyAppState extends State<MyApp> {
 
       platformVersion = await _chainwayRfidScannerPlugin.getPlatformVersion() ??
           'Unknown platform version';
+
+      await _chainwayRfidScannerPlugin.getScanPower().then((res) {
+        _currentPower = res ?? -1;
+      });
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -132,6 +138,11 @@ class _MyAppState extends State<MyApp> {
                                       .then((res) => setState(() {
                                             _connectStatus = res ?? 'Null';
                                           }));
+                                  await _chainwayRfidScannerPlugin
+                                      .getScanPower()
+                                      .then((res) {
+                                            _currentPower = res ?? -1;
+                                          });
 
                                   setState(() => _loading = false);
                                 },
@@ -267,6 +278,42 @@ class _MyAppState extends State<MyApp> {
                             },
                           );
                         })),
+
+                Expanded(
+                  child: Center(
+                    child: Text('Current Power: $_currentPower\n'),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Slider value: $_sliderValue'),
+                      Slider(
+                        min: 1,
+                        max: 30,
+                        divisions: 29,
+                        value: _sliderValue.toDouble(),
+                        label: _sliderValue.toString(),
+                        onChanged: (value) {
+                          setState(() {
+                            _sliderValue = value.round();
+                          });
+
+                          _chainwayRfidScannerPlugin.setScanPower(_sliderValue);
+
+                          _chainwayRfidScannerPlugin
+                              .getScanPower()
+                              .then((res) {
+                                    _currentPower = res ?? -1;
+                                  });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
 
                 Expanded(
                   child: Center(
