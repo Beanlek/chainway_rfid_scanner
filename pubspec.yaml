@@ -1,6 +1,6 @@
 name: chainway_rfid_scanner
-description: "A new Flutter plugin project."
-version: 0.0.1
+description: "Flutter integration for Chainway Bluetooth UHF RFID readers."
+version: 0.1.0
 homepage:
 
 environment:
@@ -36,6 +36,8 @@ flutter:
     platforms:
       android:
         package: com.amastsales.chainway_rfid_scanner
+        pluginClass: ChainwayRfidScannerPlugin
+      ios:
         pluginClass: ChainwayRfidScannerPlugin
 
   # To add assets to your plugin package, add an assets section, like this:

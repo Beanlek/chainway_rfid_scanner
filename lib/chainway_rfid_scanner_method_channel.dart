@@ -9,9 +9,16 @@ class MethodChannelChainwayRfidScanner extends ChainwayRfidScannerPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('chainway_rfid_scanner');
 
+  @visibleForTesting
+  static const discoveryEventChannel = EventChannel('discoverChainwayReaders');
+
+  @visibleForTesting
+  static const inventoryEventChannel = EventChannel('performChainwayInventory');
+
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version =
+        await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
 
@@ -22,14 +29,31 @@ class MethodChannelChainwayRfidScanner extends ChainwayRfidScannerPlatform {
     return result;
   }
 
+  @override
+  Stream<List<Map<Object?, Object?>>> discoverReaders() {
+    return discoveryEventChannel.receiveBroadcastStream().map(
+          (event) => (event as List<Object?>)
+              .map((reader) =>
+                  Map<Object?, Object?>.from(reader! as Map<Object?, Object?>))
+              .toList(growable: false),
+        );
+  }
+
+  @override
+  Future<bool?> startDiscovery() {
+    return methodChannel.invokeMethod<bool>('startDiscovery');
+  }
+
+  @override
+  Future<bool?> stopDiscovery() {
+    return methodChannel.invokeMethod<bool>('stopDiscovery');
+  }
+
   // connect to device
   @override
   Future<bool?> connect(String address) async {
-    final result = await methodChannel.invokeMethod<bool>('connect', 
-      {
-        "address": address
-      }
-    );
+    final result =
+        await methodChannel.invokeMethod<bool>('connect', {"address": address});
     return result;
   }
 
@@ -47,13 +71,26 @@ class MethodChannelChainwayRfidScanner extends ChainwayRfidScannerPlatform {
     return result;
   }
 
-
   // scan rfids
-  static const ePerformChainwayInventory = EventChannel('performChainwayInventory');
   @override
   Stream<List<Map<Object?, Object?>>?> performChainwayInventory() {
     debugPrint('Flutter: performChainwayInventory');
-    return ePerformChainwayInventory.receiveBroadcastStream().map((event) => List.from(event));
+    return inventoryEventChannel.receiveBroadcastStream().map(
+          (event) => (event as List<Object?>)
+              .map((tag) =>
+                  Map<Object?, Object?>.from(tag! as Map<Object?, Object?>))
+              .toList(growable: false),
+        );
+  }
+
+  @override
+  Future<bool?> startInventory() {
+    return methodChannel.invokeMethod<bool>('startInventory');
+  }
+
+  @override
+  Future<bool?> stopInventory() {
+    return methodChannel.invokeMethod<bool>('stopInventory');
   }
 
   // clear rfids
@@ -66,11 +103,8 @@ class MethodChannelChainwayRfidScanner extends ChainwayRfidScannerPlatform {
   // set scanner mode
   @override
   Future<bool?> setScanMode(String scanMode) async {
-    final result = await methodChannel.invokeMethod('setScanMode',
-      {
-        "scanMode": scanMode
-      }
-    );
+    final result =
+        await methodChannel.invokeMethod('setScanMode', {"scanMode": scanMode});
 
     return result;
   }
@@ -78,11 +112,8 @@ class MethodChannelChainwayRfidScanner extends ChainwayRfidScannerPlatform {
   // set power level
   @override
   Future<bool?> setScanPower(int scanPower) async {
-    final result = await methodChannel.invokeMethod('setScanPower',
-      {
-        "scanPower": scanPower
-      }
-    );
+    final result = await methodChannel
+        .invokeMethod('setScanPower', {"scanPower": scanPower});
 
     return result;
   }

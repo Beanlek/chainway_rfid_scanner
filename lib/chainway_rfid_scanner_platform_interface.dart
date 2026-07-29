@@ -8,7 +8,8 @@ abstract class ChainwayRfidScannerPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static ChainwayRfidScannerPlatform _instance = MethodChannelChainwayRfidScanner();
+  static ChainwayRfidScannerPlatform _instance =
+      MethodChannelChainwayRfidScanner();
 
   /// The default instance of [ChainwayRfidScannerPlatform] to use.
   ///
@@ -32,6 +33,18 @@ abstract class ChainwayRfidScannerPlatform extends PlatformInterface {
     throw UnimplementedError('initReader() has not been implemented.');
   }
 
+  Stream<List<Map<Object?, Object?>>> discoverReaders() {
+    throw UnimplementedError('discoverReaders() has not been implemented.');
+  }
+
+  Future<bool?> startDiscovery() {
+    throw UnimplementedError('startDiscovery() has not been implemented.');
+  }
+
+  Future<bool?> stopDiscovery() {
+    throw UnimplementedError('stopDiscovery() has not been implemented.');
+  }
+
   // connect to device
   Future<bool?> connect(String address) {
     throw UnimplementedError('connect() has not been implemented.');
@@ -47,10 +60,18 @@ abstract class ChainwayRfidScannerPlatform extends PlatformInterface {
     throw UnimplementedError('getConnectState() has not been implemented.');
   }
 
-
   // scan rfids
   Stream<List<Map<Object?, Object?>>?> performChainwayInventory() {
-    throw UnimplementedError('performChainwayInventory() has not been implemented.');
+    throw UnimplementedError(
+        'performChainwayInventory() has not been implemented.');
+  }
+
+  Future<bool?> startInventory() {
+    throw UnimplementedError('startInventory() has not been implemented.');
+  }
+
+  Future<bool?> stopInventory() {
+    throw UnimplementedError('stopInventory() has not been implemented.');
   }
 
   // clear rfids

@@ -1,4 +1,3 @@
-
 import 'chainway_rfid_scanner_platform_interface.dart';
 
 class ChainwayRfidScanner {
@@ -9,6 +8,22 @@ class ChainwayRfidScanner {
   // init scanner service
   Future<String?> initReader() {
     return ChainwayRfidScannerPlatform.instance.initReader();
+  }
+
+  /// Discovers nearby Chainway BLE readers.
+  ///
+  /// Each reader contains `id`, `name`, `address`, and `rssi`. Pass `id` to
+  /// [connect] on iOS. Android callers may continue to pass a BLE MAC address.
+  Stream<List<Map<Object?, Object?>>> discoverReaders() {
+    return ChainwayRfidScannerPlatform.instance.discoverReaders();
+  }
+
+  Future<bool?> startDiscovery() {
+    return ChainwayRfidScannerPlatform.instance.startDiscovery();
+  }
+
+  Future<bool?> stopDiscovery() {
+    return ChainwayRfidScannerPlatform.instance.stopDiscovery();
   }
 
   // connect to device
@@ -26,10 +41,17 @@ class ChainwayRfidScanner {
     return ChainwayRfidScannerPlatform.instance.getConnectState();
   }
 
-
   // scan rfids
   Stream<List<Map<Object?, Object?>>?> performChainwayInventory() {
     return ChainwayRfidScannerPlatform.instance.performChainwayInventory();
+  }
+
+  Future<bool?> startInventory() {
+    return ChainwayRfidScannerPlatform.instance.startInventory();
+  }
+
+  Future<bool?> stopInventory() {
+    return ChainwayRfidScannerPlatform.instance.stopInventory();
   }
 
   // clear rfids

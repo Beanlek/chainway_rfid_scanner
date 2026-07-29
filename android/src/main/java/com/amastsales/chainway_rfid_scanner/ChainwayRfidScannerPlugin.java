@@ -2,6 +2,8 @@ package com.amastsales.chainway_rfid_scanner;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -119,7 +121,7 @@ public class ChainwayRfidScannerPlugin implements FlutterPlugin, MethodCallHandl
           Thread connectThread = new Thread(() -> {
             final boolean res = helper.connect(address);
 
-            activity.runOnUiThread(() -> result.success(res));
+            new Handler(Looper.getMainLooper()).post(() -> result.success(res));
 
           });
 
@@ -140,7 +142,7 @@ public class ChainwayRfidScannerPlugin implements FlutterPlugin, MethodCallHandl
           Thread disconnectThread = new Thread(() -> {
             final boolean res = helper.disconnect();
 
-            activity.runOnUiThread(() -> result.success(res));
+            new Handler(Looper.getMainLooper()).post(() -> result.success(res));
 
           });
 
@@ -185,14 +187,31 @@ public class ChainwayRfidScannerPlugin implements FlutterPlugin, MethodCallHandl
 
         break;
 
+      case CHANNEL_StartInventory:
+        try {
+          result.success(helper.startInventory());
+        } catch (Exception e) {
+          result.error(TAG, CHANNEL_StartInventory, e.toString());
+        }
+        break;
+
+      case CHANNEL_StopInventory:
+        try {
+          result.success(helper.stopInventory());
+        } catch (Exception e) {
+          result.error(TAG, CHANNEL_StopInventory, e.toString());
+        }
+        break;
+
       case CHANNEL_SetScanMode:
         if (D) Log.d(TAG, CHANNEL_SetScanMode);
 
         final String scanMode = call.argument("scanMode");
         if (D) Log.d(TAG, "String ScanMode" + scanMode);
 
-        if (!Objects.equals(scanMode, Constants.MODE_SINGLE) || !Objects.equals(scanMode, Constants.MODE_AUTO)) {
+        if (!Objects.equals(scanMode, Constants.MODE_SINGLE) && !Objects.equals(scanMode, Constants.MODE_AUTO)) {
           result.success(false);
+          break;
         }
 
         try {
@@ -226,8 +245,9 @@ public class ChainwayRfidScannerPlugin implements FlutterPlugin, MethodCallHandl
         final int scanPower = call.argument("scanPower");
         if (D) Log.d(TAG, "Int ScanPower" + scanPower);
 
-        if (scanPower > Constants.POWER_ZERO && scanPower <= Constants.POWER_MAX) {
+        if (scanPower <= Constants.POWER_ZERO || scanPower > Constants.POWER_MAX) {
           result.success(false);
+          break;
         }
 
         try {
@@ -253,6 +273,8 @@ public class ChainwayRfidScannerPlugin implements FlutterPlugin, MethodCallHandl
   private static final String CHANNEL_Disconnect = "disconnect";
   private static final String CHANNEL_GetConnectState = "getConnectState";
   private static final String CHANNEL_ClearInventory = "clearInventory";
+  private static final String CHANNEL_StartInventory = "startInventory";
+  private static final String CHANNEL_StopInventory = "stopInventory";
   private static final String CHANNEL_SetScanMode = "setScanMode";
   private static final String CHANNEL_SetScanPower = "setScanPower";
   private static final String CHANNEL_GetScanPower = "getScanPower";

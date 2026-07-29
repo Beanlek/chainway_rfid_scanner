@@ -283,6 +283,20 @@ public class ChainwayRfidScannerHelper {
 
         return this.tagList;
     }
+    public boolean startInventory() {
+        if (mReader == null || mReader.getConnectStatus() != ConnectionStatus.CONNECTED) {
+            return false;
+        }
+        fPerformInventory();
+        return isScanning;
+    }
+    public boolean stopInventory() {
+        if (mReader == null) {
+            return false;
+        }
+        fStopInventory();
+        return !isScanning;
+    }
     public void clearInventory() {
         tagList.clear();
         tempDatas.clear();
